@@ -1,0 +1,1 @@
+CREATE TABLE "crowdfunding_platform"."saved_projects" ("user_id" uuid NOT NULL, "project_id" uuid NOT NULL, PRIMARY KEY ("user_id","project_id") , FOREIGN KEY ("user_id") REFERENCES "crowdfunding_platform"."user"("id") ON UPDATE cascade ON DELETE cascade, FOREIGN KEY ("project_id") REFERENCES "crowdfunding_platform"."project"("id") ON UPDATE cascade ON DELETE cascade);

@@ -1,0 +1,2 @@
+CREATE TABLE "crowdfunding_platform"."transaction" ("id" uuid NOT NULL DEFAULT gen_random_uuid(), "wallet_id" uuid NOT NULL, "amount" numeric NOT NULL, "starting_balance" numeric NOT NULL, "final_balance" numeric NOT NULL, "remark" text NOT NULL, "transaction_date" timestamptz NOT NULL DEFAULT now(), PRIMARY KEY ("id") , FOREIGN KEY ("wallet_id") REFERENCES "crowdfunding_platform"."wallet"("id") ON UPDATE no action ON DELETE no action);
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
