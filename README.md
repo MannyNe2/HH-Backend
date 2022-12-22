@@ -1,5 +1,5 @@
-# Crowdfunding Platform Backend
-Back-end for a crowdfunding platform built in partial fulfillment of the requirements for a Bachelor's degree from HiLCoE School of Computer Science and Technology
+# Helping Hand Backend
+Back-end for a crowdfunding platform
 
 ## Requirements
 | Name | Version | Link |
