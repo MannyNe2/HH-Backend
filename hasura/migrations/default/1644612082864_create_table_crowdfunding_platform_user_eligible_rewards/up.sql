@@ -1,0 +1,2 @@
+CREATE TABLE "crowdfunding_platform"."user_eligible_rewards" ("id" uuid NOT NULL DEFAULT gen_random_uuid(), "user_id" uuid NOT NULL, "reward_id" uuid NOT NULL, PRIMARY KEY ("id") , FOREIGN KEY ("user_id") REFERENCES "crowdfunding_platform"."user"("id") ON UPDATE cascade ON DELETE cascade, FOREIGN KEY ("reward_id") REFERENCES "crowdfunding_platform"."campaign_reward"("id") ON UPDATE restrict ON DELETE restrict);
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
