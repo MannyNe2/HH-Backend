@@ -1,0 +1,23 @@
+table:
+  name: saved_project
+  schema: crowdfunding_platform
+configuration:
+  custom_column_names: {}
+  custom_name: saved_project
+  custom_root_fields:
+    delete: delete_saved_project
+    delete_by_pk: delete_by_pk_saved_project
+    insert: insert_saved_project
+    insert_one: insert_saved_project_one
+    select: saved_project
+    select_aggregate: saved_project_aggregate
+    select_by_pk: saved_project_by_pk
+    update: update_saved_project
+    update_by_pk: update_by_pk_saved_project
+object_relationships:
+- name: project
+  using:
+    foreign_key_constraint_on: project_id
+- name: user
+  using:
+    foreign_key_constraint_on: user_id

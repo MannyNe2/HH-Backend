@@ -1,0 +1,17 @@
+table:
+  name: campaign_end_status
+  schema: crowdfunding_platform
+is_enum: true
+configuration:
+  custom_column_names: {}
+  custom_name: campaign_end_status
+  custom_root_fields:
+    delete: delete_campaign_end_status
+    delete_by_pk: delete_by_pk_campaign_end_status
+    insert: insert_campaign_end_status
+    insert_one: insert_campaign_end_status_one
+    select: campaign_end_status
+    select_aggregate: campaign_end_status_aggregate
+    select_by_pk: campaign_end_status_by_pk
+    update: update_campaign_end_status
+    update_by_pk: update_by_pk_campaign_end_status

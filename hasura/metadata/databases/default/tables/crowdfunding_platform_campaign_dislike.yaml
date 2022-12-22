@@ -1,0 +1,45 @@
+table:
+  name: campaign_dislike
+  schema: crowdfunding_platform
+configuration:
+  custom_column_names: {}
+  custom_name: campaign_dislike
+  custom_root_fields:
+    delete: delete_campaign_dislike
+    delete_by_pk: delete_by_pk_campaign_dislike
+    insert: insert_campaign_dislike
+    insert_one: insert_campaign_dislike_one
+    select: campaign_dislike
+    select_aggregate: campaign_dislike_aggregate
+    select_by_pk: campaign_dislike_by_pk
+    update: update_campaign_dislike
+    update_by_pk: update_by_pk_campaign_dislike
+object_relationships:
+- name: campaign
+  using:
+    foreign_key_constraint_on: campaign_id
+- name: user
+  using:
+    foreign_key_constraint_on: user_id
+select_permissions:
+- permission:
+    columns:
+    - campaign_id
+    - user_id
+    filter:
+      campaign:
+        creator_id:
+          _eq: X-Hasura-User-Id
+  role: creator
+- permission:
+    columns:
+    - campaign_id
+    - user_id
+    filter:
+      _and:
+      - campaign:
+          is_private:
+            _eq: false
+      - user_id:
+          _eq: X-Hasura-User-Id
+  role: user

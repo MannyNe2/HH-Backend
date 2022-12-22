@@ -1,0 +1,44 @@
+table:
+  name: reward_type
+  schema: crowdfunding_platform
+is_enum: true
+configuration:
+  custom_column_names: {}
+  custom_name: reward_type
+  custom_root_fields:
+    delete: delete_reward_type
+    delete_by_pk: delete_by_pk_reward_type
+    insert: insert_reward_type
+    insert_one: insert_reward_type_one
+    select: reward_type
+    select_aggregate: reward_type_aggregate
+    select_by_pk: reward_type_by_pk
+    update: update_reward_type
+    update_by_pk: update_by_pk_reward_type
+array_relationships:
+- name: rewards
+  using:
+    foreign_key_constraint_on:
+      column: type
+      table:
+        name: campaign_reward
+        schema: crowdfunding_platform
+select_permissions:
+- permission:
+    columns:
+    - description
+    - type
+    filter: {}
+  role: anonymous
+- permission:
+    columns:
+    - description
+    - type
+    filter: {}
+  role: creator
+- permission:
+    columns:
+    - description
+    - type
+    filter: {}
+  role: user

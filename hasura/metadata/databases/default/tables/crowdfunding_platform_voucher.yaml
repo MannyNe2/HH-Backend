@@ -1,0 +1,16 @@
+table:
+  name: voucher
+  schema: crowdfunding_platform
+configuration:
+  custom_column_names: {}
+  custom_name: voucher
+  custom_root_fields:
+    delete: delete_voucher
+    delete_by_pk: delete_by_pk_voucher
+    insert: insert_voucher
+    insert_one: insert_voucher_one
+    select: voucher
+    select_aggregate: voucher_aggregate
+    select_by_pk: voucher_by_pk
+    update: update_voucher
+    update_by_pk: update_by_pk_voucher

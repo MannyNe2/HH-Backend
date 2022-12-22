@@ -1,0 +1,3 @@
+table:
+  name: campaign_likes
+  schema: crowdfunding_platform

@@ -1,0 +1,170 @@
+table:
+  name: campaign
+  schema: crowdfunding_platform
+configuration:
+  custom_column_names: {}
+  custom_name: campaign
+  custom_root_fields:
+    delete: delete_campaign
+    delete_by_pk: delete_by_pk_campaign
+    insert: insert_campaign
+    insert_one: insert_campaign_one
+    select: campaign
+    select_aggregate: campaign_aggregate
+    select_by_pk: campaign_by_pk
+    update: update_campaign
+    update_by_pk: update_by_pk_campaign
+object_relationships:
+- name: creator
+  using:
+    foreign_key_constraint_on: creator_id
+- name: withdrawal_request
+  using:
+    foreign_key_constraint_on:
+      column: campaign_id
+      table:
+        name: withdrawal_request
+        schema: crowdfunding_platform
+array_relationships:
+- name: comments
+  using:
+    foreign_key_constraint_on:
+      column: campaign_id
+      table:
+        name: comment
+        schema: crowdfunding_platform
+- name: dislikes
+  using:
+    foreign_key_constraint_on:
+      column: campaign_id
+      table:
+        name: campaign_dislike
+        schema: crowdfunding_platform
+- name: likes
+  using:
+    foreign_key_constraint_on:
+      column: campaign_id
+      table:
+        name: campaign_like
+        schema: crowdfunding_platform
+- name: pledges
+  using:
+    foreign_key_constraint_on:
+      column: campaign_id
+      table:
+        name: pledge
+        schema: crowdfunding_platform
+- name: reports
+  using:
+    foreign_key_constraint_on:
+      column: reported_campaign_id
+      table:
+        name: campaign_report
+        schema: crowdfunding_platform
+- name: rewards
+  using:
+    foreign_key_constraint_on:
+      column: campaign_id
+      table:
+        name: campaign_reward
+        schema: crowdfunding_platform
+insert_permissions:
+- permission:
+    backend_only: false
+    check:
+      creator:
+        is_banned:
+          _eq: false
+    columns:
+    - banner
+    - deadline
+    - description
+    - goal
+    - is_private
+    - thumbnail
+    - title
+    set:
+      creator_id: x-hasura-User-Id
+  role: creator
+select_permissions:
+- permission:
+    columns:
+    - banner
+    - created_at
+    - creator_id
+    - deadline
+    - description
+    - end_status
+    - goal
+    - id
+    - is_ended
+    - is_private
+    - thumbnail
+    - title
+    - updated_at
+    filter:
+      is_private:
+        _eq: false
+  role: anonymous
+- permission:
+    columns:
+    - banner
+    - created_at
+    - creator_id
+    - deadline
+    - description
+    - end_status
+    - goal
+    - id
+    - is_enabled
+    - is_ended
+    - is_private
+    - thumbnail
+    - title
+    - updated_at
+    filter:
+      _or:
+      - creator_id:
+          _eq: X-Hasura-User-Id
+      - is_private:
+          _eq: false
+  role: creator
+- permission:
+    columns:
+    - banner
+    - created_at
+    - creator_id
+    - deadline
+    - description
+    - end_status
+    - goal
+    - id
+    - is_ended
+    - is_private
+    - thumbnail
+    - title
+    - updated_at
+    filter:
+      is_private:
+        _eq: false
+  role: user
+update_permissions:
+- permission:
+    check: null
+    columns:
+    - banner
+    - deadline
+    - description
+    - is_private
+    - thumbnail
+    - title
+    filter:
+      _and:
+      - creator_id:
+          _eq: X-Hasura-User-Id
+      - is_ended:
+          _eq: false
+      - creator:
+          is_banned:
+            _eq: false
+  role: creator

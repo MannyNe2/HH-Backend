@@ -1,0 +1,51 @@
+table:
+  name: campaign_report
+  schema: crowdfunding_platform
+configuration:
+  custom_column_names: {}
+  custom_name: campaign_report
+  custom_root_fields:
+    delete: delete_campaign_report
+    delete_by_pk: delete_by_pk_campaign_report
+    insert: insert_campaign_report
+    insert_one: insert_campaign_report_one
+    select: campaign_report
+    select_aggregate: campaign_report_aggregate
+    select_by_pk: campaign_report_by_pk
+    update: update_campaign_report
+    update_by_pk: update_by_pk_campaign_report
+object_relationships:
+- name: campaign
+  using:
+    foreign_key_constraint_on: reported_campaign_id
+- name: investigator
+  using:
+    foreign_key_constraint_on: investigating_user_id
+- name: reporter
+  using:
+    foreign_key_constraint_on: reporting_user_id
+insert_permissions:
+- permission:
+    backend_only: false
+    check:
+      reporter:
+        is_banned:
+          _eq: false
+    columns:
+    - reason
+    - reported_campaign_id
+    set:
+      reporting_user_id: x-hasura-User-Id
+  role: creator
+- permission:
+    backend_only: false
+    check:
+      reporter:
+        is_banned:
+          _eq: false
+    columns:
+    - reason
+    - reported_campaign_id
+    set:
+      reporting_user_id: x-hasura-User-Id
+  role: user

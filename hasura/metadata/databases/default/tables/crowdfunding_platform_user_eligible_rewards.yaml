@@ -1,0 +1,50 @@
+table:
+  name: user_eligible_rewards
+  schema: crowdfunding_platform
+configuration:
+  custom_column_names: {}
+  custom_name: user_eligible_rewards
+  custom_root_fields:
+    delete: delete_user_eligible_rewards
+    delete_by_pk: delete_by_pk_user_eligible_rewards
+    insert: insert_user_eligible_rewards
+    insert_one: insert_user_eligible_rewards_one
+    select: user_eligible_rewards
+    select_aggregate: user_eligible_rewards_aggregate
+    select_by_pk: user_eligible_rewards_by_pk
+    update: update_user_eligible_rewards
+    update_by_pk: update_by_pk_user_eligible_rewards
+object_relationships:
+- name: reward
+  using:
+    foreign_key_constraint_on: reward_id
+- name: user
+  using:
+    foreign_key_constraint_on: user_id
+select_permissions:
+- permission:
+    columns:
+    - id
+    - reward_id
+    - user_id
+    filter:
+      _and:
+      - user:
+          is_banned:
+            _eq: false
+      - user_id:
+          _eq: X-Hasura-User-Id
+  role: creator
+- permission:
+    columns:
+    - id
+    - reward_id
+    - user_id
+    filter:
+      _and:
+      - user:
+          is_banned:
+            _eq: false
+      - user_id:
+          _eq: X-Hasura-User-Id
+  role: user

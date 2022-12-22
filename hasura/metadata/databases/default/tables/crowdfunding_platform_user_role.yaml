@@ -1,0 +1,17 @@
+table:
+  name: user_role
+  schema: crowdfunding_platform
+is_enum: true
+configuration:
+  custom_column_names: {}
+  custom_name: user_role
+  custom_root_fields:
+    delete: delete_user_role
+    delete_by_pk: delete_by_pk_user_role
+    insert: insert_user_role
+    insert_one: insert_user_role_one
+    select: user_role
+    select_aggregate: user_role_aggregate
+    select_by_pk: user_role_by_pk
+    update: update_user_role
+    update_by_pk: update_by_pk_user_role

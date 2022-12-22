@@ -1,0 +1,60 @@
+table:
+  name: wallet
+  schema: crowdfunding_platform
+configuration:
+  custom_column_names: {}
+  custom_name: wallet
+  custom_root_fields:
+    delete: delete_wallet
+    delete_by_pk: delete_by_pk_wallet
+    insert: insert_wallet
+    insert_one: insert_wallet_one
+    select: wallet
+    select_aggregate: wallet_aggregate
+    select_by_pk: wallet_by_pk
+    update: update_wallet
+    update_by_pk: update_by_pk_wallet
+object_relationships:
+- name: user
+  using:
+    foreign_key_constraint_on:
+      column: wallet_id
+      table:
+        name: user
+        schema: crowdfunding_platform
+array_relationships:
+- name: pledges
+  using:
+    foreign_key_constraint_on:
+      column: wallet_id
+      table:
+        name: pledge
+        schema: crowdfunding_platform
+- name: transactions
+  using:
+    foreign_key_constraint_on:
+      column: wallet_id
+      table:
+        name: transaction
+        schema: crowdfunding_platform
+select_permissions:
+- permission:
+    columns:
+    - pledged_balance
+    - updated_at
+    - useable_balance
+    filter:
+      user:
+        id:
+          _eq: X-Hasura-User-Id
+  role: creator
+- permission:
+    columns:
+    - pledged_balance
+    - updated_at
+    - useable_balance
+    filter:
+      user:
+        id:
+          _eq: X-Hasura-User-Id
+  role: user

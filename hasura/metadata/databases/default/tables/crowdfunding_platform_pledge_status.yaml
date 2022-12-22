@@ -1,0 +1,17 @@
+table:
+  name: pledge_status
+  schema: crowdfunding_platform
+is_enum: true
+configuration:
+  custom_column_names: {}
+  custom_name: pledge_status
+  custom_root_fields:
+    delete: delete_pledge_status
+    delete_by_pk: delete_by_pk_pledge_status
+    insert: insert_pledge_status
+    insert_one: insert_pledge_status_one
+    select: pledge_status
+    select_aggregate: pledge_status_aggregate
+    select_by_pk: pledge_status_by_pk
+    update: update_pledge_status
+    update_by_pk: update_by_pk_pledge_status

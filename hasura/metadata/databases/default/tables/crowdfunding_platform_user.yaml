@@ -1,0 +1,157 @@
+table:
+  name: user
+  schema: crowdfunding_platform
+configuration:
+  custom_column_names: {}
+  custom_name: user
+  custom_root_fields:
+    delete: delete_user
+    delete_by_pk: delete_by_pk_user
+    insert: insert_user
+    insert_one: insert_user_one
+    select: user
+    select_aggregate: user_aggregate
+    select_by_pk: user_by_pk
+    update: update_user
+    update_by_pk: update_by_pk_user
+object_relationships:
+- name: wallet
+  using:
+    foreign_key_constraint_on: wallet_id
+array_relationships:
+- name: campaigns
+  using:
+    foreign_key_constraint_on:
+      column: creator_id
+      table:
+        name: campaign
+        schema: crowdfunding_platform
+- name: comments
+  using:
+    foreign_key_constraint_on:
+      column: user_id
+      table:
+        name: comment
+        schema: crowdfunding_platform
+- name: creator_requests
+  using:
+    foreign_key_constraint_on:
+      column: requested_by_user_id
+      table:
+        name: creator_request
+        schema: crowdfunding_platform
+- name: disliked_campaigns
+  using:
+    foreign_key_constraint_on:
+      column: user_id
+      table:
+        name: campaign_dislike
+        schema: crowdfunding_platform
+- name: eligible_rewards
+  using:
+    foreign_key_constraint_on:
+      column: user_id
+      table:
+        name: user_eligible_rewards
+        schema: crowdfunding_platform
+- name: liked_campaigns
+  using:
+    foreign_key_constraint_on:
+      column: user_id
+      table:
+        name: campaign_like
+        schema: crowdfunding_platform
+- name: saved_campaigns
+  using:
+    foreign_key_constraint_on:
+      column: user_id
+      table:
+        name: saved_campaign
+        schema: crowdfunding_platform
+select_permissions:
+- permission:
+    columns:
+    - about
+    - avatar
+    - created_at
+    - display_name
+    - email_address
+    - first_name
+    - gender
+    - id
+    - is_banned
+    - is_verified
+    - last_name
+    - phone_number
+    - role
+    filter: {}
+  role: anonymous
+- permission:
+    columns:
+    - about
+    - avatar
+    - created_at
+    - display_name
+    - email_address
+    - first_name
+    - gender
+    - id
+    - is_banned
+    - is_verified
+    - last_name
+    - phone_number
+    - role
+    filter: {}
+  role: creator
+- permission:
+    columns:
+    - about
+    - avatar
+    - created_at
+    - display_name
+    - email_address
+    - first_name
+    - gender
+    - id
+    - is_banned
+    - is_verified
+    - last_name
+    - phone_number
+    - role
+    filter: {}
+  role: user
+update_permissions:
+- permission:
+    check: null
+    columns:
+    - about
+    - avatar
+    - display_name
+    - first_name
+    - gender
+    - last_name
+    - phone_number
+    filter:
+      _and:
+      - is_banned:
+          _eq: false
+      - id:
+          _eq: X-Hasura-User-Id
+  role: creator
+- permission:
+    check: null
+    columns:
+    - about
+    - avatar
+    - display_name
+    - first_name
+    - gender
+    - last_name
+    - phone_number
+    filter:
+      _and:
+      - is_banned:
+          _eq: false
+      - id:
+          _eq: X-Hasura-User-Id
+  role: user

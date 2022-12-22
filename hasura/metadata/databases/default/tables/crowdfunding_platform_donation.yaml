@@ -1,0 +1,55 @@
+table:
+  name: donation
+  schema: crowdfunding_platform
+configuration:
+  custom_column_names: {}
+  custom_name: donation
+  custom_root_fields:
+    delete: delete_donation
+    delete_by_pk: delete_by_pk_donation
+    insert: insert_donation
+    insert_one: insert_donation_one
+    select: donation
+    select_aggregate: donation_aggregate
+    select_by_pk: donation_by_pk
+    update: update_donation
+    update_by_pk: update_by_pk_donation
+object_relationships:
+- name: campaign
+  using:
+    foreign_key_constraint_on: campaign_id
+- name: wallet
+  using:
+    foreign_key_constraint_on: wallet_id
+select_permissions:
+- permission:
+    columns:
+    - amount
+    - campaign_id
+    - created_at
+    - updated_at
+    filter:
+      _or:
+      - wallet:
+          user:
+            id:
+              _eq: X-Hasura-User-Id
+      - campaign:
+          creator_id:
+            _eq: X-Hasura-User-Id
+  role: creator
+- permission:
+    allow_aggregations: true
+    columns:
+    - amount
+    - campaign_id
+    - created_at
+    - id
+    - updated_at
+    - wallet_id
+    filter:
+      wallet:
+        user:
+          id:
+            _eq: X-Hasura-User-Id
+  role: user

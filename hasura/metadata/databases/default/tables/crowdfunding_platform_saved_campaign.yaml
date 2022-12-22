@@ -1,0 +1,92 @@
+table:
+  name: saved_campaign
+  schema: crowdfunding_platform
+configuration:
+  custom_column_names: {}
+  custom_name: saved_campaign
+  custom_root_fields:
+    delete: delete_saved_campaign
+    delete_by_pk: delete_by_pk_saved_campaign
+    insert: insert_saved_campaign
+    insert_one: insert_saved_campaign_one
+    select: saved_campaign
+    select_aggregate: saved_campaign_aggregate
+    select_by_pk: saved_campaign_by_pk
+    update: update_saved_campaign
+    update_by_pk: update_by_pk_saved_campaign
+object_relationships:
+- name: campaign
+  using:
+    foreign_key_constraint_on: campaign_id
+- name: user
+  using:
+    foreign_key_constraint_on: user_id
+insert_permissions:
+- permission:
+    backend_only: false
+    check:
+      user:
+        is_banned:
+          _eq: false
+    columns:
+    - campaign_id
+    set:
+      user_id: x-hasura-User-Id
+  role: creator
+- permission:
+    backend_only: false
+    check:
+      user:
+        is_banned:
+          _eq: false
+    columns:
+    - campaign_id
+    set:
+      user_id: x-hasura-User-Id
+  role: user
+select_permissions:
+- permission:
+    columns:
+    - campaign_id
+    - created_at
+    - user_id
+    filter:
+      _and:
+      - user:
+          is_banned:
+            _eq: false
+      - user_id:
+          _eq: X-Hasura-User-Id
+  role: creator
+- permission:
+    columns:
+    - campaign_id
+    - created_at
+    - user_id
+    filter:
+      _and:
+      - user:
+          is_banned:
+            _eq: false
+      - user_id:
+          _eq: X-Hasura-User-Id
+  role: user
+delete_permissions:
+- permission:
+    filter:
+      _and:
+      - user:
+          is_banned:
+            _eq: false
+      - user_id:
+          _eq: X-Hasura-User-Id
+  role: creator
+- permission:
+    filter:
+      _and:
+      - user:
+          is_banned:
+            _eq: false
+      - user_id:
+          _eq: X-Hasura-User-Id
+  role: user

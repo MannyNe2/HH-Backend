@@ -1,0 +1,61 @@
+table:
+  name: pledge
+  schema: crowdfunding_platform
+configuration:
+  custom_column_names: {}
+  custom_name: pledge
+  custom_root_fields:
+    delete: delete_pledge
+    delete_by_pk: delete_by_pk_pledge
+    insert: insert_pledge
+    insert_one: insert_pledge_one
+    select: pledge
+    select_aggregate: pledge_aggregate
+    select_by_pk: pledge_by_pk
+    update: update_pledge
+    update_by_pk: update_by_pk_pledge
+object_relationships:
+- name: campaign
+  using:
+    foreign_key_constraint_on: campaign_id
+- name: wallet
+  using:
+    foreign_key_constraint_on: wallet_id
+select_permissions:
+- permission:
+    columns:
+    - id
+    - wallet_id
+    - campaign_id
+    - amount
+    - created_at
+    - updated_at
+    - accept_rewards
+    - status
+    filter:
+      _or:
+      - wallet:
+          user:
+            id:
+              _eq: X-Hasura-User-Id
+      - campaign:
+          creator_id:
+            _eq: X-Hasura-User-Id
+  role: creator
+- permission:
+    allow_aggregations: true
+    columns:
+    - accept_rewards
+    - amount
+    - campaign_id
+    - created_at
+    - id
+    - status
+    - updated_at
+    - wallet_id
+    filter:
+      wallet:
+        user:
+          id:
+            _eq: X-Hasura-User-Id
+  role: user

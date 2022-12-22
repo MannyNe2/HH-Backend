@@ -1,0 +1,41 @@
+table:
+  name: withdrawal_request
+  schema: crowdfunding_platform
+configuration:
+  custom_column_names: {}
+  custom_name: withdrawal_request
+  custom_root_fields:
+    delete: delete_withdrawal_request
+    delete_by_pk: delete_by_pk_withdrawal_request
+    insert: insert_withdrawal_request
+    insert_one: insert_withdrawal_request_one
+    select: withdrawal_request
+    select_aggregate: withdrawal_request_aggregate
+    select_by_pk: withdrawal_request_by_pk
+    update: update_withdrawal_request
+    update_by_pk: update_by_pk_withdrawal_request
+object_relationships:
+- name: campaign
+  using:
+    foreign_key_constraint_on: campaign_id
+- name: handler
+  using:
+    foreign_key_constraint_on: handled_by
+select_permissions:
+- permission:
+    columns:
+    - created_at
+    - id
+    - status
+    - campaign_id
+    - updated_at
+    filter:
+      _and:
+      - campaign:
+          id:
+            _eq: X-Hasura-User-Id
+      - campaign:
+          creator:
+            is_banned:
+              _eq: false
+  role: creator

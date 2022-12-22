@@ -1,0 +1,94 @@
+table:
+  name: campaign_reward
+  schema: crowdfunding_platform
+configuration:
+  custom_column_names: {}
+  custom_name: reward
+  custom_root_fields:
+    delete: delete_reward
+    delete_by_pk: delete_by_pk_reward
+    insert: insert_reward
+    insert_one: insert_reward_one
+    select: reward
+    select_aggregate: reward_aggregate
+    select_by_pk: reward_by_pk
+    update: update_reward
+    update_by_pk: update_by_pk_reward
+object_relationships:
+- name: campaign
+  using:
+    foreign_key_constraint_on: campaign_id
+insert_permissions:
+- permission:
+    backend_only: false
+    check:
+      _and:
+      - campaign:
+          creator:
+            is_banned:
+              _eq: false
+      - campaign:
+          creator:
+            id:
+              _eq: X-Hasura-User-Id
+    columns:
+    - campaign_id
+    - description
+    - estimated_delivery_date
+    - pledge_amount
+    - title
+    - type
+  role: creator
+select_permissions:
+- permission:
+    columns:
+    - estimated_delivery_date
+    - pledge_amount
+    - description
+    - title
+    - type
+    - created_at
+    - updated_at
+    - campaign_id
+    - id
+    filter:
+      campaign:
+        is_private:
+          _eq: false
+  role: anonymous
+- permission:
+    columns:
+    - id
+    - campaign_id
+    - pledge_amount
+    - title
+    - description
+    - estimated_delivery_date
+    - type
+    - created_at
+    - updated_at
+    filter:
+      _or:
+      - campaign:
+          creator_id:
+            _eq: X-Hasura-User-Id
+      - campaign:
+          is_private:
+            _eq: false
+  role: creator
+- permission:
+    columns:
+    - id
+    - campaign_id
+    - pledge_amount
+    - title
+    - description
+    - estimated_delivery_date
+    - type
+    - created_at
+    - updated_at
+    filter:
+      campaign:
+        is_private:
+          _eq: false
+  role: user

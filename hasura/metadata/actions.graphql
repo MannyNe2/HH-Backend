@@ -1,0 +1,257 @@
+type Mutation {
+  approveWithdrawal(
+    withdrawalRequestId: uuid!
+    adminPassword: String!
+    creatorPassword: String!
+  ): WithdrawApproval
+}
+
+type Mutation {
+  backCampaign(
+    campaignId: uuid!
+    amount: numeric!
+    acceptRewards: Boolean
+  ): CampaignPledge
+}
+
+type Mutation {
+  campaignDislike(
+    campaignId: uuid!
+  ): DislikeState
+}
+
+type Mutation {
+  campaignLike(
+    campaignId: uuid!
+  ): LikeState
+}
+
+type Mutation {
+  changePassword(
+    oldPassword: String!
+    newPassword: String!
+  ): PasswordChangeStatus
+}
+
+type Mutation {
+  claimVoucher(
+    voucherCode: String!
+  ): VoucherClaimStatus
+}
+
+type Mutation {
+  deleteUser(
+    emailAddress: String!
+    password: String!
+  ): DeleteStatus
+}
+
+type Mutation {
+  endCampaign(
+    campaignId: uuid!
+    status: String!
+    password: String!
+  ): CampaignEndState
+}
+
+type Mutation {
+  forceStopCampaign(
+    campaignId: uuid!
+    password: String!
+    banCreator: Boolean
+  ): CampaignStopState
+}
+
+type Mutation {
+  generateVouchers(
+    count: Int
+    codeLength: Int
+    value: money
+  ): VoucherGenerateStatus
+}
+
+type Query {
+  getCampaignSentiment(
+    campaignId: uuid!
+  ): CampaignSentiment
+}
+
+type Query {
+  getCampaignStats(
+    campaignId: uuid!
+  ): CampaignStats!
+}
+
+type Mutation {
+  processPledge(
+    pledgeId: uuid!
+    status: String!
+  ): PledgeProcessResult
+}
+
+type Query {
+  refreshToken(
+    oldToken: String!
+  ): NewToken
+}
+
+type Mutation {
+  requestCreatorship(
+    password: String!
+    image: String!
+  ): CreatorRequest
+}
+
+type Mutation {
+  requestWithdrawal(
+    password: String!
+    campaignId: uuid!
+  ): WithdrawalRequest
+}
+
+type Query {
+  signIn(
+    emailAddress: String!
+    password: String
+  ): UserInfo
+}
+
+type Mutation {
+  signUp(
+    emailAddress: String!
+    password: String!
+    firstName: String!
+    lastName: String!
+    displayName: String!
+    gender: String!
+  ): UserCredentials
+}
+
+type UserInfo {
+  accessToken: String!
+  userId: String!
+  firstName: String!
+  lastName: String!
+  isVerified: Boolean!
+  isBanned: Boolean!
+  avatarUrl: String
+  displayName: String
+  role: String!
+}
+
+type UserCredentials {
+  accessToken: String!
+  userId: String!
+  firstName: String!
+  lastName: String!
+  isVerified: Boolean!
+  isBanned: Boolean!
+  avatarUrl: String
+  displayName: String!
+  gender: String!
+  role: String!
+}
+
+type NewToken {
+  newToken: String!
+}
+
+type DeleteStatus {
+  status: Boolean!
+  remark: String
+}
+
+type VoucherGenerateStatus {
+  success: Boolean!
+}
+
+type VoucherClaimStatus {
+  success: Boolean!
+  remark: String!
+}
+
+type PasswordChangeStatus {
+  success: Boolean!
+  remark: String!
+}
+
+type CampaignLikes {
+  likes: Int!
+}
+
+type CampaignDislikes {
+  dislikes: Int!
+}
+
+type CampaignPledge {
+  pledgeId: uuid!
+  transactionId: uuid!
+}
+
+type CampaignSentiment {
+  id: uuid!
+  likes: Int!
+  dislikes: Int!
+}
+
+type LikeState {
+  liked: Boolean!
+  likesCount: Int!
+  dislikesCount: Int!
+}
+
+type DislikeState {
+  disliked: Boolean!
+  likesCount: Int!
+  dislikesCount: Int!
+}
+
+type CampaignProgress {
+  amount: numeric!
+}
+
+type TotalPledged {
+  amount: numeric!
+}
+
+type CampaignStats {
+  backersCount: Int!
+  totalAmount: numeric!
+  currentUserRelation: String
+}
+
+type CreatorRequest {
+  requestId: String!
+  status: String!
+  created_at: String!
+}
+
+type CampaignEndState {
+  campaignId: uuid!
+  endStatus: String!
+}
+
+type PledgeProcessResult {
+  pledgeId: uuid!
+  status: uuid!
+}
+
+type WithdrawalRequest {
+  id: uuid!
+  campaignId: uuid!
+  status: String!
+  createdAt: date!
+  updatedAt: date!
+}
+
+type WithdrawApproval {
+  withdrawalRequestId: uuid!
+  status: String!
+  handlerId: uuid!
+}
+
+type CampaignStopState {
+  campaignId: uuid!
+  success: Boolean!
+}
+

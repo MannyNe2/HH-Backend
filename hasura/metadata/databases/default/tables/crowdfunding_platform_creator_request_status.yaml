@@ -1,0 +1,17 @@
+table:
+  name: creator_request_status
+  schema: crowdfunding_platform
+is_enum: true
+configuration:
+  custom_column_names: {}
+  custom_name: creator_request_status
+  custom_root_fields:
+    delete: delete_creator_request_status
+    delete_by_pk: delete_by_pk_creator_request_status
+    insert: insert_creator_request_status
+    insert_one: insert_creator_request_status_one
+    select: creator_request_status
+    select_aggregate: creator_request_status_aggregate
+    select_by_pk: creator_request_status_by_pk
+    update: update_creator_request_status
+    update_by_pk: update_by_pk_creator_request_status

@@ -1,0 +1,51 @@
+table:
+  name: comment_report
+  schema: crowdfunding_platform
+configuration:
+  custom_column_names: {}
+  custom_name: comment_report
+  custom_root_fields:
+    delete: delete_comment_report
+    delete_by_pk: delete_by_pk_comment_report
+    insert: insert_comment_report
+    insert_one: insert_comment_report_one
+    select: comment_report
+    select_aggregate: comment_report_aggregate
+    select_by_pk: comment_report_by_pk
+    update: update_comment_report
+    update_by_pk: update_by_pk_comment_report
+object_relationships:
+- name: comment
+  using:
+    foreign_key_constraint_on: reported_comment_id
+- name: investigator
+  using:
+    foreign_key_constraint_on: investigating_user_id
+- name: reporter
+  using:
+    foreign_key_constraint_on: reporting_user_id
+insert_permissions:
+- permission:
+    backend_only: false
+    check:
+      reporter:
+        is_banned:
+          _eq: false
+    columns:
+    - reason
+    - reported_comment_id
+    set:
+      reporting_user_id: x-hasura-User-Id
+  role: creator
+- permission:
+    backend_only: false
+    check:
+      reporter:
+        is_banned:
+          _eq: false
+    columns:
+    - reason
+    - reported_comment_id
+    set:
+      reporting_user_id: x-hasura-User-Id
+  role: user

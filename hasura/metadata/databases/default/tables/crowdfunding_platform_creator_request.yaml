@@ -1,0 +1,46 @@
+table:
+  name: creator_request
+  schema: crowdfunding_platform
+configuration:
+  custom_column_names: {}
+  custom_name: creator_request
+  custom_root_fields:
+    delete: delete_creator_request
+    delete_by_pk: delete_by_pk_creator_request
+    insert: insert_creator_request
+    insert_one: insert_creator_request_one
+    select: creator_request
+    select_aggregate: creator_request_aggregate
+    select_by_pk: creator_request_by_pk
+    update: update_creator_request
+    update_by_pk: update_by_pk_creator_request
+object_relationships:
+- name: handler
+  using:
+    foreign_key_constraint_on: handled_by_user_id
+- name: requestor
+  using:
+    foreign_key_constraint_on: requested_by_user_id
+select_permissions:
+- permission:
+    columns:
+    - created_at
+    - id
+    - requested_by_user_id
+    - status
+    - updated_at
+    filter:
+      requested_by_user_id:
+        _eq: X-Hasura-User-Id
+  role: creator
+- permission:
+    columns:
+    - created_at
+    - id
+    - requested_by_user_id
+    - status
+    - updated_at
+    filter:
+      requested_by_user_id:
+        _eq: X-Hasura-User-Id
+  role: user

@@ -1,0 +1,189 @@
+actions:
+- name: approveWithdrawal
+  definition:
+    kind: synchronous
+    handler: '{{ACTION_BASE_URL}}/v1/campaign/approveWithdrawal'
+    headers:
+    - name: ACTION_SECRET
+      value_from_env: ACTION_SECRET
+- name: backCampaign
+  definition:
+    kind: synchronous
+    handler: '{{ACTION_BASE_URL}}/v1/campaign/back'
+    headers:
+    - name: ACTION_SECRET
+      value_from_env: ACTION_SECRET
+  permissions:
+  - role: creator
+  - role: user
+- name: campaignDislike
+  definition:
+    kind: synchronous
+    handler: '{{ACTION_BASE_URL}}/v1/campaign/dislike'
+    headers:
+    - name: ACTION_SECRET
+      value_from_env: ACTION_SECRET
+  permissions:
+  - role: user
+  - role: creator
+- name: campaignLike
+  definition:
+    kind: synchronous
+    handler: '{{ACTION_BASE_URL}}/v1/campaign/like'
+    headers:
+    - name: ACTION_SECRET
+      value_from_env: ACTION_SECRET
+  permissions:
+  - role: user
+  - role: creator
+- name: changePassword
+  definition:
+    kind: synchronous
+    handler: '{{ACTION_BASE_URL}}/v1/user/changePassword'
+    headers:
+    - name: ACTION_SECRET
+      value_from_env: ACTION_SECRET
+  permissions:
+  - role: creator
+  - role: user
+- name: claimVoucher
+  definition:
+    kind: synchronous
+    handler: '{{ACTION_BASE_URL}}/v1/voucher/claim'
+    headers:
+    - name: ACTION_SECRET
+      value_from_env: ACTION_SECRET
+  permissions:
+  - role: user
+- name: deleteUser
+  definition:
+    kind: synchronous
+    handler: '{{ACTION_BASE_URL}}/v1/auth/deleteUser'
+    headers:
+    - name: ACTION_SECRET
+      value_from_env: ACTION_SECRET
+- name: endCampaign
+  definition:
+    kind: synchronous
+    handler: '{{ACTION_BASE_URL}}/v1/campaign/end'
+    headers:
+    - name: ACTION_SECRET
+      value_from_env: ACTION_SECRET
+  permissions:
+  - role: creator
+- name: forceStopCampaign
+  definition:
+    kind: synchronous
+    handler: '{{ACTION_BASE_URL}}/v1/campaign/forceStop'
+    headers:
+    - name: ACTION_SECRET
+      value_from_env: ACTION_SECRET
+- name: generateVouchers
+  definition:
+    kind: synchronous
+    handler: '{{ACTION_BASE_URL}}/v1/voucher/generate'
+    headers:
+    - name: ACTION_SECRET
+      value_from_env: ACTION_SECRET
+- name: getCampaignSentiment
+  definition:
+    kind: ""
+    handler: '{{ACTION_BASE_URL}}/v1/campaign/getSentiment'
+    headers:
+    - name: ACTION_SECRET
+      value_from_env: ACTION_SECRET
+  permissions:
+  - role: user
+  - role: anonymous
+  - role: creator
+- name: getCampaignStats
+  definition:
+    kind: ""
+    handler: '{{ACTION_BASE_URL}}/v1/campaign/getStats'
+    headers:
+    - name: ACTION_SECRET
+      value_from_env: ACTION_SECRET
+  permissions:
+  - role: user
+  - role: anonymous
+  - role: creator
+- name: processPledge
+  definition:
+    kind: synchronous
+    handler: '{{ACTION_BASE_URL}}/v1/campaign/processPledge'
+    headers:
+    - name: ACTION_SECRET
+      value_from_env: ACTION_SECRET
+- name: refreshToken
+  definition:
+    kind: ""
+    handler: '{{ACTION_BASE_URL}}/v1/auth/refreshToken'
+    forward_client_headers: true
+    headers:
+    - name: ACTION_SECRET
+      value_from_env: ACTION_SECRET
+  permissions:
+  - role: anonymous
+- name: requestCreatorship
+  definition:
+    kind: synchronous
+    handler: '{{ACTION_BASE_URL}}/v1/user/requestCreatorship'
+    headers:
+    - name: ACTION_SECRET
+      value_from_env: ACTION_SECRET
+  permissions:
+  - role: user
+- name: requestWithdrawal
+  definition:
+    kind: synchronous
+    handler: '{{ACTION_BASE_URL}}/v1/campaign/withdrawFunds'
+    headers:
+    - name: ACTION_SECRET
+      value_from_env: ACTION_SECRET
+  permissions:
+  - role: creator
+- name: signIn
+  definition:
+    kind: ""
+    handler: '{{ACTION_BASE_URL}}/v1/auth/signIn'
+    headers:
+    - name: ACTION_SECRET
+      value_from_env: ACTION_SECRET
+  permissions:
+  - role: anonymous
+- name: signUp
+  definition:
+    kind: synchronous
+    handler: '{{ACTION_BASE_URL}}/v1/auth/signUp'
+    headers:
+    - name: ACTION_SECRET
+      value_from_env: ACTION_SECRET
+  permissions:
+  - role: anonymous
+custom_types:
+  enums: []
+  input_objects: []
+  objects:
+  - name: UserInfo
+  - name: UserCredentials
+  - name: NewToken
+  - name: DeleteStatus
+  - name: VoucherGenerateStatus
+  - name: VoucherClaimStatus
+  - name: PasswordChangeStatus
+  - name: CampaignLikes
+  - name: CampaignDislikes
+  - name: CampaignPledge
+  - name: CampaignSentiment
+  - name: LikeState
+  - name: DislikeState
+  - name: CampaignProgress
+  - name: TotalPledged
+  - name: CampaignStats
+  - name: CreatorRequest
+  - name: CampaignEndState
+  - name: PledgeProcessResult
+  - name: WithdrawalRequest
+  - name: WithdrawApproval
+  - name: CampaignStopState
+  scalars: []

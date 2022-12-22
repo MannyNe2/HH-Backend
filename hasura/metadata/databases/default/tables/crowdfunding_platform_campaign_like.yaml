@@ -1,0 +1,45 @@
+table:
+  name: campaign_like
+  schema: crowdfunding_platform
+configuration:
+  custom_column_names: {}
+  custom_name: campaign_like
+  custom_root_fields:
+    delete: delete_campaign_like
+    delete_by_pk: delete_by_pk_campaign_like
+    insert: insert_campaign_like
+    insert_one: insert_campaign_like_one
+    select: campaign_like
+    select_aggregate: campaign_like_aggregate
+    select_by_pk: campaign_like_by_pk
+    update: update_campaign_like
+    update_by_pk: update_by_pk_campaign_like
+object_relationships:
+- name: campaign
+  using:
+    foreign_key_constraint_on: campaign_id
+- name: user
+  using:
+    foreign_key_constraint_on: user_id
+select_permissions:
+- permission:
+    columns:
+    - campaign_id
+    - user_id
+    filter:
+      campaign:
+        creator_id:
+          _eq: X-Hasura-User-Id
+  role: creator
+- permission:
+    columns:
+    - campaign_id
+    - user_id
+    filter:
+      _and:
+      - campaign:
+          is_private:
+            _eq: false
+      - user_id:
+          _eq: X-Hasura-User-Id
+  role: user

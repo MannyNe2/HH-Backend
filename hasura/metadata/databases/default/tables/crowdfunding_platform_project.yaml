@@ -1,0 +1,14 @@
+table:
+  name: project
+  schema: crowdfunding_platform
+object_relationships:
+- name: user
+  using:
+    foreign_key_constraint_on: creator_id
+- name: withdrawal_request
+  using:
+    foreign_key_constraint_on:
+      column: requested_from
+      table:
+        name: withdrawal_request
+        schema: crowdfunding_platform

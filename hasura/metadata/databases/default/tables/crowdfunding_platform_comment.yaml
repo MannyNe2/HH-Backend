@@ -1,0 +1,183 @@
+table:
+  name: comment
+  schema: crowdfunding_platform
+configuration:
+  custom_column_names: {}
+  custom_name: comment
+  custom_root_fields:
+    delete: delete_comment
+    delete_by_pk: delete_by_pk_comment
+    insert: insert_comment
+    insert_one: insert_comment_one
+    select: comment
+    select_aggregate: comment_aggregate
+    select_by_pk: comment_by_pk
+    update: update_comment
+    update_by_pk: update_by_pk_comment
+object_relationships:
+- name: campaign
+  using:
+    foreign_key_constraint_on: campaign_id
+- name: user
+  using:
+    foreign_key_constraint_on: user_id
+array_relationships:
+- name: reports
+  using:
+    foreign_key_constraint_on:
+      column: reported_comment_id
+      table:
+        name: comment_report
+        schema: crowdfunding_platform
+insert_permissions:
+- permission:
+    backend_only: false
+    check:
+      _and:
+      - user:
+          is_banned:
+            _eq: false
+      - _or:
+        - campaign:
+            creator_id:
+              _eq: X-Hasura-User-Id
+        - campaign:
+            is_private:
+              _eq: false
+    columns:
+    - campaign_id
+    - text
+    set:
+      user_id: x-hasura-User-Id
+  role: creator
+- permission:
+    backend_only: false
+    check:
+      _and:
+      - user:
+          is_banned:
+            _eq: false
+      - campaign:
+          is_private:
+            _eq: false
+    columns:
+    - campaign_id
+    - text
+    set:
+      user_id: x-hasura-User-Id
+  role: user
+select_permissions:
+- permission:
+    allow_aggregations: true
+    columns:
+    - campaign_id
+    - created_at
+    - id
+    - text
+    - updated_at
+    - user_id
+    filter:
+      _and:
+      - campaign:
+          is_private:
+            _eq: false
+      - user:
+          is_muted:
+            _eq: false
+      - user:
+          is_banned:
+            _eq: false
+  role: anonymous
+- permission:
+    columns:
+    - campaign_id
+    - created_at
+    - id
+    - text
+    - updated_at
+    - user_id
+    filter:
+      _or:
+      - campaign:
+          creator_id:
+            _eq: X-Hasura-User-Id
+      - _and:
+        - campaign:
+            is_private:
+              _eq: false
+        - user:
+            is_banned:
+              _eq: false
+        - user:
+            is_muted:
+              _eq: false
+  role: creator
+- permission:
+    allow_aggregations: true
+    columns:
+    - campaign_id
+    - created_at
+    - id
+    - text
+    - updated_at
+    - user_id
+    filter:
+      _and:
+      - campaign:
+          is_private:
+            _eq: false
+      - user:
+          is_muted:
+            _eq: false
+      - user:
+          is_banned:
+            _eq: false
+  role: user
+update_permissions:
+- permission:
+    check: null
+    columns:
+    - text
+    filter:
+      _and:
+      - user:
+          is_banned:
+            _eq: false
+      - user:
+          id:
+            _eq: X-Hasura-User-Id
+  role: creator
+- permission:
+    check: null
+    columns:
+    - text
+    filter:
+      _and:
+      - user:
+          is_banned:
+            _eq: false
+      - user:
+          id:
+            _eq: X-Hasura-User-Id
+  role: user
+delete_permissions:
+- permission:
+    filter:
+      _and:
+      - user:
+          is_banned:
+            _eq: false
+      - user:
+          id:
+            _eq: X-Hasura-User-Id
+  role: creator
+- permission:
+    filter:
+      _and:
+      - user:
+          is_banned:
+            _eq: false
+      - user:
+          id:
+            _eq: X-Hasura-User-Id
+  role: user
