@@ -1,0 +1,46 @@
+{
+  "name": "crowdfunding-backend-hlc",
+  "version": "1.0.0",
+  "description": "Back-end for a crowdfunding platform built in partial fulfillment of the requirements for a Bachelor's degree from HiLCoE School of Computer Science and Technology",
+  "main": "server.js",
+  "repository": "git@github.com:BigusBeckus/crowdfunding-backend-hlc.git",
+  "license": "Apache 2.0",
+  "private": true,
+  "scripts": {
+    "dev": "docker-compose -f db/docker-compose.yaml up -d && docker-compose up -d && yarn all:log",
+    "redev": "yarn down && yarn dev",
+    "fill": "yarn migrate && yarn seed",
+    "down": "docker-compose -f db/docker-compose.yaml down && docker-compose down",
+    "api:up": "docker-compose up -d",
+    "db": "docker-compose -f db/docker-compose.yaml up -d",
+    "db:down": "docker-compose -f db/docker-compose.yaml down",
+    "all:log": "docker-compose logs -f --tail 100",
+    "hasura": "hasura --project hasura --envfile ../.env",
+    "hasura:prod": "hasura --project hasura --envfile ../.env.production",
+    "hasura:init": "hasura init hasura",
+    "console": "yarn hasura console --envfile ../.env",
+    "migrate": "yarn hasura migrate apply && yarn hasura metadata apply",
+    "migrate:prod": "yarn hasura:prod migrate apply && yarn hasura:prod metadata apply",
+    "migrate:status": "yarn hasura migrate status",
+    "rebuild": "docker-compose build crowdfunding_express && yarn dev",
+    "service:dev": "yarn nodemon server.js",
+    "clean-dangling": "docker rmi $(docker images -f \"dangling=true\" -q)",
+    "prune-volumes": "docker volume prune",
+    "clean": "yarn clean-dangling && yarn prune-volumes",
+    "seed": "yarn hasura seeds apply"
+  },
+  "devDependencies": {
+    "hasura-cli": "^2.0.9",
+    "nodemon": "^2.0.15"
+  },
+  "dependencies": {
+    "argon2": "^0.28.3",
+    "axios": "^0.24.0",
+    "body-parser": "^1.19.1",
+    "date-fns": "^2.28.0",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.2",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0"
+  }
+}

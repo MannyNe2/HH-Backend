@@ -1,0 +1,37 @@
+version: '3.6'
+services:
+  crowdfunding_express:
+    container_name: 'crowdfunding_express'
+    network_mode: 'host'
+    build:
+      dockerfile: express.dockerfile
+      context: .
+      args:
+        - EXPRESS_PORT=${EXPRESS_PORT}
+        - JWT_SECRET=${JWT_SECRET}
+        - HASURA_GRAPHQL_V1_HOST=${HASURA_GRAPHQL_V1_HOST}
+        - ACTION_SECRET=${ACTION_SECRET}
+    restart: always
+    environment:
+      - EXPRESS_PORT=${EXPRESS_PORT}
+      - NODE_ENV=${NODE_ENV:-development}
+    volumes:
+      - .:/usr/src/app:ro
+      - /usr/src/app/node_modules/
+
+  crowdfunding_graphql-engine:
+    container_name: crowdfunding_graphql-engine
+    image: hasura/graphql-engine:v2.0.10
+    restart: always
+    network_mode: host
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: ${POSTGRES_URI}
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "false"
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
+      HASURA_GRAPHQL_ENABLE_TELEMETRY: "false"
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
+      HASURA_GRAPHQL_SERVER_PORT: ${HASURA_GRAPHQL_SERVER_PORT}
+      HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_JWT_SECRET: ${HASURA_GRAPHQL_JWT_SECRET}
+      ACTION_BASE_URL: ${HASURA_GRAPHQL_ACTIONS_HANDLER_WEBHOOK_BASEURL}
+      ACTION_SECRET: ${ACTION_SECRET}
