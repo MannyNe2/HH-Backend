@@ -1,7 +1,7 @@
 {
   "name": "crowdfunding-backend-hlc",
   "version": "1.0.0",
-  "description": "Back-end for a crowdfunding platform built in partial fulfillment of the requirements for a Bachelor's degree from HiLCoE School of Computer Science and Technology",
+  "description": "Back-end for a crowdfunding platform (Helping-Hand)",
   "main": "server.js",
   "repository": "git@github.com:BigusBeckus/crowdfunding-backend-hlc.git",
   "license": "Apache 2.0",
