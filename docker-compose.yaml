@@ -2,7 +2,10 @@ version: '3.6'
 services:
   crowdfunding_express:
     container_name: 'crowdfunding_express'
-    network_mode: 'host'
+    ports:
+      - ${EXPRESS_PORT}:${EXPRESS_PORT}
+    networks:
+      - main
     build:
       dockerfile: express.dockerfile
       context: .
@@ -19,11 +22,29 @@ services:
       - .:/usr/src/app:ro
       - /usr/src/app/node_modules/
 
+  crowdfunding_db:
+    container_name: crowdfunding_db
+    image: postgres:13-alpine
+    volumes:
+      - ./pgDB:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_HOST_PORT}:5432"
+    networks:
+      - main
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+
   crowdfunding_graphql-engine:
     container_name: crowdfunding_graphql-engine
     image: hasura/graphql-engine:v2.0.10
     restart: always
-    network_mode: host
+    ports:
+      - ${HASURA_GRAPHQL_SERVER_PORT}:${HASURA_GRAPHQL_SERVER_PORT}
+    networks:
+      - main
     environment:
       HASURA_GRAPHQL_DATABASE_URL: ${POSTGRES_URI}
       HASURA_GRAPHQL_ENABLE_CONSOLE: "false"
@@ -35,3 +56,7 @@ services:
       HASURA_GRAPHQL_JWT_SECRET: ${HASURA_GRAPHQL_JWT_SECRET}
       ACTION_BASE_URL: ${HASURA_GRAPHQL_ACTIONS_HANDLER_WEBHOOK_BASEURL}
       ACTION_SECRET: ${ACTION_SECRET}
+
+networks:
+  main:
+    driver: bridge
